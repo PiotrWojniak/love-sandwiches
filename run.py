@@ -58,28 +58,27 @@ def validate_data(values):
 
     return True
 
-"""
-Two function before refactoring
+#"""
+#Two function before refactoring
+#"""
+#def update_sales_worksheet(data):
+#    """
+#    Update sales worksheet, and new row with the list data provided.
+#    """
+#    print("Updating sales worksheet...\n")
+#    sales_worksheet = SHEET.worksheet("sales")
+#    sales_worksheet.append_row(data)
+#    print("Sales worksheet updated successfully.\n")
 
-def update_sales_worksheet(data):
-    """
-    Update sales worksheet, and new row with the list data provided.
-    """
-    print("Updating sales worksheet...\n")
-    sales_worksheet = SHEET.worksheet("sales")
-    sales_worksheet.append_row(data)
-    print("Sales worksheet updated successfully.\n")
 
-
-def update_surplus_worksheet(data):
-    """
-    Update surplus worksheet, and new row with the list data provided.
-    """
-    print("Updating surplus worksheet...\n")
-    surplus_worksheet = SHEET.worksheet("surplus")
-    surplus_worksheet.append_row(data)
-    print("Surplus worksheet updated successfully.\n")
-"""
+#def update_surplus_worksheet(data):
+#    """
+#    Update surplus worksheet, and new row with the list data provided.
+#    """
+#    print("Updating surplus worksheet...\n")
+#    surplus_worksheet = SHEET.worksheet("surplus")
+#    surplus_worksheet.append_row(data)
+#    print("Surplus worksheet updated successfully.\n")
 
 
 def update_worksheet(data, worksheet):
@@ -113,6 +112,22 @@ def calculate_surplus_data(sales_row):
     return surplus_data
 
 
+def get_last_5_entries_sales():
+    """
+    Collection collumns of data from sales worksheet, collecting
+    the last 5 enteries for each sandwich and return the data
+    as a list of lists.
+    """
+    sales = SHEET.worksheet("sales")
+
+    columns = []
+    for ind in range(1, 7):
+        column = sales.col_values(ind)
+        columns.append(column[-5:])
+
+    return columns
+
+
 def main():
     """
     Run all program function
@@ -127,4 +142,6 @@ def main():
     update_worksheet(new_surplus_data, "surplus")
 
 print("Welcome to Love Sandwiches Data Automotion")
-main()
+#main()
+
+sales_columns = get_last_5_entries_sales()
