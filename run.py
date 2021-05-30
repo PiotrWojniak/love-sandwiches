@@ -128,6 +128,29 @@ def get_last_5_entries_sales():
     return columns
 
 
+def calculate_stock_data(data):
+    """
+    Calculating the average stock for each item type and addind(increase by) 10%
+    """
+    print("Calculating stock data...\n")
+    new_stock_data = []
+
+    for column in data:
+        int_column = [int(num) for num in column]
+        """
+        We know our stock columns will always have 5 item, so this expression
+        would also work:
+        sum(int_column) / 5
+        In this example we learn how to use len() method to calculate
+        the average from a list when the length of the list may vary
+        """
+        average = sum(int_column) / len(int_column)
+        stock_num = average * 1.1
+        new_stock_data.append(round(stock_num))
+
+    return new_stock_data
+
+
 def main():
     """
     Run all program function
@@ -140,8 +163,39 @@ def main():
     update_worksheet(sales_data, "sales")
     new_surplus_data = calculate_surplus_data(sales_data)
     update_worksheet(new_surplus_data, "surplus")
+    sales_columns = get_last_5_entries_sales()
+    """
+    Passing stock_data that was returned by get_last_5_enteries_sale
+    """
+    stock_data = calculate_stock_data(sales_columns)
+    update_worksheet(stock_data, "stock")
+    return stock_data
 
-print("Welcome to Love Sandwiches Data Automotion")
-#main()
+print("Welcome to Love Sandwiches data automation.\n")
+stock_data = main()
 
-sales_columns = get_last_5_entries_sales()
+#sales_columns = get_last_5_entries_sales()
+#"""
+#Passing stock_data that was returned by get_last_5_enteries_sale
+#"""
+#stock_data = calculate_stock_data(sales_columns)
+# student writes function
+def get_stock_values(data):
+    """
+    Print out the calculated stock numbers for each sandwich type.
+    """
+    headings = SHEET.worksheet("stock").get_all_values()[0]
+                        #   OR
+    # headings = SHEET.worksheet('stock').row_values(1)
+
+    print("Make the following numbers of sandwiches for next market:\n")
+
+    # new_data = {}
+    # for heading, stock_num in zip(headings, data):
+    #     new_data[heading] = stock_num
+    # return new_data
+
+    return {heading: data for heading, data in zip(headings, data)}
+
+stock_values = get_stock_values(stock_data)
+print(stock_values)
